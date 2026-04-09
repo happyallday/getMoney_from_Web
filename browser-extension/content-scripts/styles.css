@@ -1,0 +1,105 @@
+/* 精简版内容脚本样式 */
+.welfare-helper-fill-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.welfare-helper-fill-btn:hover {
+  background: #2980b9;
+}
+
+.welfare-helper-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  z-index: 9999;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: welfareHelperSlideIn 0.3s ease;
+}
+
+.welfare-helper-toast.success {
+  background: #27ae60;
+  color: white;
+}
+
+.welfare-helper-toast.error {
+  background: #e74c3c;
+  color: white;
+}
+
+.welfare-helper-toast.info {
+  background: #3498db;
+  color: white;
+}
+
+@keyframes welfareHelperSlideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes welfareHelperSlideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.welfare-helper-badge {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #2c3e50;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 25px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 10000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.welfare-helper-badge:hover {
+  transform: scale(1.05);
+}
+
+.welfare-helper-badge .status {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #27ae60;
+  border-radius: 50%;
+  margin-right: 8px;
+  animation: welfareHelperPulse 2s infinite;
+}
+
+@keyframes welfareHelperPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

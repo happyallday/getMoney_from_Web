@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>福利助手</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎁 福利助手</h1>
+            <div class="version">v0.1.0</div>
+        </header>
+
+        <div class="status-section">
+            <div class="status-card">
+                <div class="status-title">系统状态</div>
+                <div class="status-value" id="systemStatus">检查中...</div>
+            </div>
+            <div class="status-card">
+                <div class="status-title">今日福利</div>
+                <div class="status-value" id="dailyWelfare">0</div>
+            </div>
+        </div>
+
+        <div class="platforms-section">
+            <h2>支持平台</h2>
+            <div class="platform-grid">
+                <div class="platform-card" data-platform="mobile">
+                    <div class="icon">📱</div>
+                    <div class="name">中国移动</div>
+                    <div class="status" id="mobile-status">未激活</div>
+                </div>
+                <div class="platform-card" data-platform="unicom">
+                    <div class="icon">📞</div>
+                    <div class="name">中国联通</div>
+                    <div class="status" id="unicom-status">未激活</div>
+                </div>
+                <div class="platform-card" data-platform="telecom">
+                    <div class="icon">🌐</div>
+                    <div class="name">中国电信</div>
+                    <div class="status" id="telecom-status">未激活</div>
+                </div>
+                <div class="platform-card" data-platform="jd">
+                    <div class="icon">🛒</div>
+                    <div class="name">京东</div>
+                    <div class="status" id="jd-status">未激活</div>
+                </div>
+                <div class="platform-card" data-platform="taobao">
+                    <div class="icon">🛍️</div>
+                    <div class="name">淘宝</div>
+                    <div class="status" id="taobao-status">未激活</div>
+                </div>
+                <div class="platform-card" data-platform="pdd">
+                    <div class="icon">🎯</div>
+                    <div class="name">拼多多</div>
+                    <div class="status" id="pdd-status">未激活</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <button class="btn btn-primary" id="checkWelfare">检查福利</button>
+            <button class="btn btn-secondary" id="openSettings">设置</button>
+        </div>
+
+        <div class="recent-activities">
+            <h3>最近活动</h3>
+            <div class="activity-list" id="activityList">
+                <div class="empty-state">暂无活动记录</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
