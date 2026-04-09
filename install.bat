@@ -1,148 +1,149 @@
 @echo off
 chcp 65001 >nul
 echo ========================================
-echo   福利助手 - 合规福利获取浏览器扩展
-echo   安装程序 v0.1.0
+echo   Welfare Helper - Browser Extension
+echo   Installation Program v0.1.0
 echo ========================================
 echo.
 
-:: 检查Python环境
-echo [1/5] 检查Python环境...
+:: Check Python environment
+echo [1/5] Checking Python environment...
 python --version >nul 2>&1
 if errorlevel 1 (
-    echo ❌ 未检测到Python环境，请先安装Python 3.10+
+    echo   [ERROR] Python not detected, please install Python 3.10+
     pause
     exit /b 1
 )
-echo ✅ Python环境检查通过
+echo   [OK] Python environment check passed
 
-:: 检查pip
+:: Check pip
 echo.
-echo [2/5] 检查pip环境...
+echo [2/5] Checking pip environment...
 pip --version >nul 2>&1
 if errorlevel 1 (
-    echo ❌ 未检测到pip，请检查Python安装
+    echo   [ERROR] pip not detected, please check Python installation
     pause
     exit /b 1
 )
-echo ✅ pip环境检查通过
+echo   [OK] pip environment check passed
 
-:: 创建虚拟环境
+:: Create virtual environment
 echo.
-echo [3/5] 创建Python虚拟环境...
+echo [3/5] Creating Python virtual environment...
 if not exist venv (
     python -m venv venv
-    echo ✅ 虚拟环境创建成功
+    echo   [OK] Virtual environment created successfully
 ) else (
-    echo ℹ️  虚拟环境已存在，跳过创建
+    echo   [INFO] Virtual environment already exists, skipping creation
 )
 
-:: 激活虚拟环境并安装依赖
+:: Activate virtual environment and install dependencies
 echo.
-echo [4/5] 安装Python依赖包...
+echo [4/5] Installing Python dependency packages...
 call venv\Scripts\activate.bat
 pip install --upgrade pip
 pip install -r requirements.txt
 if errorlevel 1 (
-    echo ❌ 依赖包安装失败
+    echo   [ERROR] Dependency package installation failed
     pause
     exit /b 1
 )
-echo ✅ 依赖包安装完成
+echo   [OK] Dependency packages installed successfully
 
-:: 初始化数据库
+:: Initialize database
 echo.
-echo [5/5] 初始化数据库...
+echo [5/5] Initializing database...
+mkdir database 2>nul
 python -c "import sqlite3; conn = sqlite3.connect('database/welfare_helper.db'); conn.executescript(open('database/schema.sql', 'r', encoding='utf-8').read()); conn.commit(); conn.close()"
 if errorlevel 1 (
-    echo ❌ 数据库初始化失败
+    echo   [ERROR] Database initialization failed
     pause
     exit /b 1
 )
-echo ✅ 数据库初始化完成
+echo   [OK] Database initialization completed
 
-:: 安装系统服务
+:: Install system service
 echo.
 echo ========================================
-echo  安装系统服务
+echo  Install System Service
 echo ========================================
-choice /C YN /M "是否安装为系统服务（开机自动启动）？"
+choice /C YN /M "Install as system service (auto-start on boot)?"
 if errorlevel 2 goto :skip_service
 if errorlevel 1 goto :install_service
 
 :install_service
-echo 正在安装系统服务...
-python python-backend/service_manager.py install
+echo Installing system service...
+python python-backend/service_manager.py install 2>nul
 if errorlevel 1 (
-    echo ❌ 系统服务安装失败，可以手动运行后端服务
+    echo   [WARNING] System service installation failed, you can run backend service manually
 ) else (
-    echo ✅ 系统服务安装成功
-    echo 上次启动服务: net start WelfareHelper
+    echo   [OK] System service installed successfully
+    echo   Start service: net start WelfareHelper
 )
 goto :service_done
 
 :skip_service
-echo ⏭️  跳过系统服务安装
+echo   [SKIP] System service installation skipped
 
 :service_done
 
-:: 浏览器扩展安装指导
+:: Browser extension installation guide
 echo.
 echo ========================================
-echo  浏览器扩展安装
+echo  Browser Extension Installation
 echo ========================================
-echo 请按照以下步骤安装浏览器扩展：
+echo Please follow these steps to install the browser extension:
 echo.
-echo 1. 打开Chrome/Edge浏览器
-echo 2. 访问：chrome://extensions/
-echo 3. 启用"开发者模式"
-echo 4. 点击"加载已解压的扩展程序"
-echo 5. 选择本目录的 browser-extension 文件夹
+echo 1. Open Chrome/Edge browser
+echo 2. Visit: chrome://extensions/
+echo 3. Enable "Developer mode"
+echo 4. Click "Load unpacked extension program"
+echo 5. Select the browser-extension folder in this directory
 echo.
-echo 安装完成后，浏览器地址栏会显示福利助手图标
+echo After installation, the Welfare Helper icon will appear in the browser address bar
 echo.
 
-:: 创建桌面快捷方式
-echo 创建桌面快捷方式...
+:: Create desktop shortcut
+echo Creating desktop shortcut...
 set "shortcut_target=%CD%\browser-extension"
-set "shortcut_name=福利助手"
+set "shortcut_name=WelfareHelper"
 powershell -Command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%USERPROFILE%\Desktop\%shortcut_name%.url');$s.TargetPath='%CD%';$s.Save()"
-echo ✅ 桌面快捷方式创建完成
+echo   [OK] Desktop shortcut created successfully
 
-:: 安装完成
+:: Installation complete
 echo.
 echo ========================================
-echo  🎉 安装完成！
+echo  Installation Complete!
 echo ========================================
 echo.
-echo 后端服务操作说明：
-echo   - 启动服务：         python python-backend/main.py
-echo   - 或使用服务：      net start WelfareHelper
-echo   - 停止服务：         net stop WelfareHelper
+echo Backend service operation instructions:
+echo   - Start service:   python python-backend/main.py
+echo   - Or use service:  net start WelfareHelper
+echo   - Stop service:    net stop WelfareHelper
 echo.
-echo 配置文件位置：
-echo   - 用户配置：        database/welfare_helper.db
-echo   - 浏览器扩展配置：  browser-extension/popup/
+echo Configuration file location:
+echo   - User configuration:   database/welfare_helper.db
+echo   - Extension config:     browser-extension/popup/
 echo.
-echo 文档位置：
-echo   - 用户指南：        docs/USER_GUIDE.md
-echo   - 常见问题：        docs/FAQ.md
+echo Documentation location:
+echo   - User guide:      docs/USER_GUIDE.md
+echo   - Installation:    docs/INSTALL.md
 echo.
 echo ========================================
 echo.
 
-choice /C YN /M "是否立即启动后端服务？"
+choice /C YN /M "Start backend service immediately?"
 if errorlevel 2 goto :end
 if errorlevel 1 goto :start_service
 
 :start_service
-echo 启动后端服务...
+echo Starting backend service...
 start python python-backend/main.py
-echo ✅ 后端服务已启动
-echo 请确保浏览器扩展已正确安装
+echo   [OK] Backend service started
+echo Please ensure browser extension is properly installed
 echo.
 
 :end
-echo 感谢使用福利助手！
+echo Thank you for using Welfare Helper!
 echo.
 pause
